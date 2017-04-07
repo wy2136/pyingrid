@@ -2,15 +2,15 @@
 @author: Wenchang Yang (yang.wenchan@uci.edu)
 """
 
-from . import datalib
+from .datalib import urls as datalib_urls
 
 def listdata():
-    '''list all datasets in the datalib.'''
-    return [s for s in dir(datalib) if not s.startswith('_')]
+    '''list all datasets in the datalib_urls.'''
+    return [s for s in dir(datalib_urls) if not s.startswith('_')]
 
 def findata(dname=None):
     '''find data according to the name'''
-    datalist = [s for s in dir(datalib) if not s.startswith('_')]
+    datalist = [s for s in dir(datalib_urls) if not s.startswith('_')]
     if dname is None:
         return datalist
     else:
@@ -32,8 +32,8 @@ def get_dataurl(*args, server=None):
     elif len(args) == 1 and ' ' in args[0]: # only one positional arg that contains space
         dataurl = '/'.join(args[0].split())
     else: # only one positional args
-        try: # the single positional arg is a dataname stored in the datalib
-            dataurl = getattr(datalib, args[0])
+        try: # the single positional arg is a dataname stored in the datalib_urls
+            dataurl = getattr(datalib_urls, args[0])
         except AttributeError: # the single positional arg is the dataurl
             dataurl = args[0]
     if server is not None:

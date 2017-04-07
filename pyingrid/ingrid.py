@@ -57,6 +57,8 @@ class Ingrid(object):
         datafile = self.to_url()
         if datafile.endswith('.nc') or datafile.endswith('/dods'):
             pass
+        elif datafile.endswith('/'):
+            datafile += 'dods'
         else:
             datafile += '/dods'
         try:
@@ -82,7 +84,10 @@ class Ingrid(object):
     def look(self, **kw):
         '''Look at the Ingrid dataset structure.'''
         ds = self.to_dataset(**kw)
-        print(ds)
+        try:
+            ds.info()
+        except:
+            print(ds)
 
     def trend(self, dim='T'):
         '''Calculate linear trend along a given dimension dim.'''
