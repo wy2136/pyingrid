@@ -59,6 +59,8 @@ def nav_datalib():
         s = input('>>> Your selection is: ')
         print('')
         if s == '':
+            if current_url.endswith('/'):
+                current_url = current_url[:-1]
             print(current_url)
             return current_url
         elif int(s) == 0:
@@ -77,4 +79,6 @@ def nav_datalib():
         items = get_data_items(current_url)
         item_names = sorted(items.keys())
 
+    if current_url.endswith('/'):
+        current_url = current_url[:-1]
     return current_url

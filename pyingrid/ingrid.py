@@ -3,7 +3,8 @@
 """
 
 import xarray as xr
-from .util import num2time
+from .util import (num2time, ingrid_climatology, ingrid_trend,
+    ingrid_sel_range, ingrid_sel_season)
 from .datalib_manager import get_dataurl
 
 def _get_time_dim_name(ds):
@@ -89,8 +90,30 @@ class Ingrid(object):
         except:
             print(ds)
 
+    def sel_range(self, *args, **kw):
+        '''Select a time range, e.g. 'Jan 1980' to 'Dec 2009'.
+        See pyingrid.util.ingrid_time_range.'''
+        cmd = ingrid_sel_range(*args, **kw)
+        self._dataflow.append(cmd)
+        return self
+
+    def sel_season(self, *args, **kw):
+        '''Specify a season, e.g. 'Mar-May'.
+        See pyingrid.util.ingrid_season.'''
+        cmd = ingrid_sel_season(*args, **kw)
+        self._dataflow.append(cmd)
+        return self
+
+    def climatology(self, *args, **kw):
+        '''Calculate climatology.
+        See pyingrid.util.ingrid_climatology.'''
+        cmd = ingrid_climatology(*args, **kw)
+        self._dataflow.append(cmd)
+        return self
+
     def trend(self, dim='T'):
-        '''Calculate linear trend along a given dimension dim.'''
-        cmd = '''dup [{dim}]detrend-bfl sub dup {dim}(last)VALUES exch {dim}(first)VALUES sub'''.format(dim=dim)
+        '''Calculate linear trend along a given dimension dim.
+        See pyingrid.util.ingrid_trend.'''
+        cmd = ingrid_trend(dim=dim)
         self._dataflow.append(cmd)
         return self
